@@ -8,7 +8,7 @@ const dotenv = require("dotenv").config();
 const path = require("path");
 
 mongoose
-	.connect(`mongodb+srv://BeletteHabile:IlAfPGT7wRSeyUV4@cluster0.apj7t.mongodb.net/P7?retryWrites=true&w=majority`, {
+	.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.apj7t.mongodb.net/P7?retryWrites=true&w=majority`, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})

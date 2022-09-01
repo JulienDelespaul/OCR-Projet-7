@@ -2,10 +2,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const mongoSanitize = require("express-mongo-sanitize");
+const userRoutes = require("./routes/user");
+const postRoutes = require("./routes/post");
 const dotenv = require("dotenv").config();
+const path = require("path");
 
 mongoose
-	.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.apj7t.mongodb.net/?retryWrites=true&w=majority`, {
+	.connect(`mongodb+srv://BeletteHabile:IlAfPGT7wRSeyUV4@cluster0.apj7t.mongodb.net/P7?retryWrites=true&w=majority`, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})
@@ -24,5 +27,10 @@ app.use((req, res, next) => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(mongoSanitize());
+
+app.use("/images", express.static(path.join(__dirname, "images")));
+
+app.use("/api/auth", userRoutes);
+app.use("/api/post", postRoutes);
 
 module.exports = app;

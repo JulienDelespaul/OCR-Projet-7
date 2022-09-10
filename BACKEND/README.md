@@ -23,6 +23,8 @@ The application will be developed with the following technologies:
 - React
 - Node.js
 
-## Disclaimer
+## How to make it work
 
-This project is at the early stage of development. As such, it is not functional.
+Type "npm install" then "npm start" or "node server.js" if you don't want it running on nodemon.
+
+The .env documentation is currently on the to do list.

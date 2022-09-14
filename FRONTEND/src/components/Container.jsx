@@ -14,8 +14,6 @@ const Container = () => {
 			<button onClick={() => setIsLogin(!isLogin)} className="text-base brutal-btn" />
 			<LoginPageSplashText />
 			{isLogin ? <LoginPageForm /> : <CreateAccountForm />}
-			{/* <LoginPageForm />
-			<CreateAccountForm /> */}
 		</div>
 	);
 };

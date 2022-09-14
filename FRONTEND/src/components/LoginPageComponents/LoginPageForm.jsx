@@ -2,6 +2,7 @@ import "../Button/button.css";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import useHttp from "../../hooks/use-httpRequest";
 
 const validationSchema = Yup.object().shape({
 	email: Yup.string().email("Cet email n'est pas valide.").required("L'email est obligatoire."),
@@ -16,7 +17,23 @@ const LoginPageForm = () => {
 		handleSubmit,
 		formState: { errors, isDirty, isValid },
 	} = useForm({ resolver: yupResolver(validationSchema), mode: "onTouched" });
-	const handleInput = (data) => console.log(data);
+	const { isLoading, error, sendRequest } = useHttp();
+	const doStuffWithData = () => {
+		// Here handle userid and token storage, most likely in local storage. Checkk XSS risk in react.
+		console.log(res.body);
+	};
+	const handleInput = (data) => {
+		// - Login, POST, /api/auth/signup, {email: string, password: string}
+		sendRequest(
+			{
+				url: "http://localhost:3001/api/auth/login",
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: { email: data.email, password: data.password },
+			},
+			doStuffWithData(response.body)
+		);
+	};
 
 	return (
 		<div className="p-4 w-1/3 border-2 border-black border-b-8 border-r-8 rounded-2xl text-xl">

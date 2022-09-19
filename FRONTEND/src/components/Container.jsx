@@ -7,13 +7,15 @@ import { useState } from "react";
 
 const Container = () => {
 	// switch beetwen login and create account;
-	const [isLogin, setIsLogin] = useState(true);
+	const [createAccountForm, setCreateAccountForm] = useState(false);
+	const toggleAccountForm = () => {
+		setCreateAccountForm(!createAccountForm);
+	};
 
 	return (
 		<div className="container flex justify-between  px-[10%] items-start w-full">
-			<button onClick={() => setIsLogin(!isLogin)} className="text-base brutal-btn" />
 			<LoginPageSplashText />
-			{isLogin ? <LoginPageForm /> : <CreateAccountForm />}
+			{!createAccountForm ? <LoginPageForm toggleAccountForm={toggleAccountForm} /> : <CreateAccountForm />}
 		</div>
 	);
 };

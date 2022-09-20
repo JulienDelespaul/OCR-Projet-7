@@ -5,7 +5,7 @@ import LoginPageForm from "./LoginPageComponents/LoginPageForm";
 import CreateAccountForm from "./LoginPageComponents/CreateAccountForm";
 import { useState } from "react";
 
-const Container = () => {
+const LoginPageContainer = () => {
 	// switch beetwen login and create account;
 	const [createAccountForm, setCreateAccountForm] = useState(false);
 	const toggleAccountForm = () => {
@@ -20,4 +20,4 @@ const Container = () => {
 	);
 };
 
-export default Container;
+export default LoginPageContainer;

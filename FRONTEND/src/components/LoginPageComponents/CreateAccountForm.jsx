@@ -55,7 +55,7 @@ const CreateAccountForm = (props) => {
 	} = useForm({ resolver: yupResolver(validationSchema), mode: "onTouched" });
 
 	return (
-		<div className="p-4 w-1/3 border-2 border-primary border-b-8 border-r-8 rounded-2xl text-xl">
+		<div className="mt-4 p-4 w-1/3 border-2 border-primary border-b-8 border-r-8 rounded-2xl text-xl">
 			{success ? (
 				<div>
 					<h1 className="text-lg font-bold text-center">Votre compte a bien été créé.</h1>

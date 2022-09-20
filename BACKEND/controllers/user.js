@@ -9,6 +9,7 @@ exports.signup = (req, res, next) => {
 			const user = new User({
 				email: req.body.email,
 				password: hash,
+				role: req.body.role,
 			});
 			user
 				.save()
@@ -33,6 +34,7 @@ exports.login = (req, res, next) => {
 					res.status(200).json({
 						userId: user._id,
 						token: jwt.sign({ userId: user._id }, process.env.JWT_TOKEN, { expiresIn: "24h" }),
+						role: user.role,
 					});
 				})
 				.catch((error) => res.status(500).json({ error }));

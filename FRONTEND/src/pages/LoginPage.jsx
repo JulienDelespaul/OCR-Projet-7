@@ -1,9 +1,9 @@
-import Container from "../components/Container";
+import LoginPageContainer from "../components/LoginPageContainer";
 
 const LoginPage = () => {
 	return (
 		<div className="h-screen flex items-center justify-center">
-			<Container />
+			<LoginPageContainer />
 		</div>
 	);
 };

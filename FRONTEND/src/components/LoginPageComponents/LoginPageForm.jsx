@@ -2,9 +2,10 @@ import "../Button/button.css";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { useContext, useEffect, useState } from "react";
-import AuthContext from "../../context/AuthProvider";
+import { useEffect, useState } from "react";
+import useAuth from "../../hooks/useAuth";
 import axios from "../../Api/axios";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const LOGIN_URL = "/auth/login";
 
@@ -18,7 +19,12 @@ const LoginPageForm = (props) => {
 		document.getElementById("email").focus();
 	}, []);
 
-	const { setAuth } = useContext(AuthContext);
+	const { setAuth } = useAuth();
+
+	const navigate = useNavigate();
+	const location = useLocation();
+	const from = location?.state?.from?.pathname || "/";
+
 	const [success, setSuccess] = useState(false);
 
 	const handleInput = async (data) => {
@@ -26,8 +32,8 @@ const LoginPageForm = (props) => {
 			const response = await axios.post(LOGIN_URL, { email: data.email, password: data.password });
 			console.log(JSON.stringify(response?.data));
 			const { token, userId } = response?.data;
-			// const roles = response?.data?.roles;
-			setAuth({ userId, token });
+			const role = response?.data?.role;
+			setAuth({ userId, token, role });
 			setSuccess(true);
 		} catch (error) {
 			console.log(error);
@@ -40,12 +46,19 @@ const LoginPageForm = (props) => {
 		formState: { errors },
 	} = useForm({ resolver: yupResolver(validationSchema), mode: "onTouched" });
 
+	const timedRedirect = () => {
+		setTimeout(() => {
+			navigate("/posts");
+		}, 3000);
+	};
+
 	return (
-		<div className="p-4 w-1/3 border-2 border-black border-b-8 border-r-8 rounded-2xl text-xl">
+		<div className="mt-4 p-4 w-1/3 border-2 border-black border-b-8 border-r-8 rounded-2xl text-xl">
 			{success ? (
 				<div>
 					<h1 className="text-primary text-lg font-bold text-center">Vous êtes désormais connecté.</h1>
-					<p className="text-primary text-lg text-center"> Vous allez être redirigé vers la page d'accueil.</p>
+					<p className="text-primary text-lg text-center"> Vous allez être redirigé vers la page principale.</p>
+					{timedRedirect()}
 				</div>
 			) : (
 				<form onSubmit={handleSubmit(handleInput)}>

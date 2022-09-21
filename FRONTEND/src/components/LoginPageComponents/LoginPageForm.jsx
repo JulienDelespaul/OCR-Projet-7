@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../Api/axios";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const LOGIN_URL = "/auth/login";
 

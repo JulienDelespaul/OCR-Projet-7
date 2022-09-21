@@ -3,7 +3,7 @@
 ## USER ROUTES
 
 - Signup, POST, /api/auth/signup, {email: string, password: string}
-- Login, POST, /api/auth/login, {email: sting, password: string}
+- Login, POST, /api/auth/login, {email: string, password: string}
 
 ## POST ROUTES
 

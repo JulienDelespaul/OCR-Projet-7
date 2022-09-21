@@ -12,6 +12,7 @@ function App() {
 			<Route path="/" element={<Layout />}>
 				{/* Public routes */}
 				<Route path="login" element={<LoginPage />} />
+				<Route path="design" element={<PostsPage />} />
 
 				{/* Private routes */}
 				<Route element={<RequireAuth allowedRoles={["user", "admin"]} />}>

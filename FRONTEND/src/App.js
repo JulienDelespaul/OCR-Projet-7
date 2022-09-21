@@ -14,7 +14,7 @@ function App() {
 				<Route path="login" element={<LoginPage />} />
 
 				{/* Private routes */}
-				<Route element={<RequireAuth allowedRoles={["user"]} />}>
+				<Route element={<RequireAuth allowedRoles={["user", "admin"]} />}>
 					<Route path="posts" element={<PostsPage />} />
 				</Route>
 				{/* Redirect to login page / catch all */}

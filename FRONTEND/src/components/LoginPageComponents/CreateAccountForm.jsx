@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { useContext, useEffect, useState } from "react";
 import axios from "../../Api/axios";
 import AuthContext from "../../context/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const SIGNUP_URL = "/auth/signup";
 
@@ -23,6 +24,7 @@ const CreateAccountForm = (props) => {
 		document.getElementById("email").focus();
 	}, []);
 
+	const navigate = useNavigate();
 	const { setAuth } = useContext(AuthContext);
 	const [success, setSuccess] = useState(false);
 
@@ -35,7 +37,8 @@ const CreateAccountForm = (props) => {
 					const response = await axios.post("/auth/login", { email: data.email, password: data.password });
 					const { token, userId } = response?.data;
 					console.log(JSON.stringify(response?.data));
-					setAuth({ userId, token });
+					const role = response?.data?.role;
+					setAuth({ userId, token, role });
 					setSuccess(true);
 				} catch (error) {
 					console.log(error);
@@ -48,6 +51,11 @@ const CreateAccountForm = (props) => {
 		}
 	};
 
+	const timedRedirect = () => {
+		setTimeout(() => {
+			navigate("/posts");
+		}, 3000);
+	};
 	const {
 		register,
 		handleSubmit,
@@ -60,6 +68,7 @@ const CreateAccountForm = (props) => {
 				<div>
 					<h1 className="text-lg font-bold text-center">Votre compte a bien été créé.</h1>
 					<p className="text-lg text-center">Vous êtes désormais connecté et vous allez être redirigé vers la page d'accueil.</p>
+					{timedRedirect()}
 				</div>
 			) : (
 				<form onSubmit={handleSubmit(handleInput)}>

@@ -14,13 +14,11 @@ exports.getAllPosts = (req, res, next) => {
 };
 
 exports.createPost = (req, res, next) => {
-	const postObject = JSON.parse(req.body.post);
+	const postObject = req.body;
 	console.log(postObject);
 	delete postObject._id;
 	const post = new Post({
 		userId: req.auth.userId,
-		name: postObject.name,
-		title: postObject.title,
 		content: postObject.content,
 		imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
 	});

@@ -20,7 +20,7 @@ exports.createPost = (req, res, next) => {
 	const post = new Post({
 		userId: req.auth.userId,
 		content: postObject.content,
-		imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+		imageUrl: req.file ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : null,
 	});
 	post
 		.save()
@@ -98,7 +98,7 @@ exports.likePost = (req, res, next) => {
 			Post.findOne({ _id: req.params.id })
 				.then((post) => {
 					// Checks if the user has already liked the post
-					if (post.usersLiked.includes(req.body.userId)) {
+					if (post.usersLiked.includes(req.auth.userId)) {
 						return res.status(400).json({ error: "Vous avez déjà liké ce post !" });
 					} else {
 						Post.updateOne(
@@ -120,7 +120,7 @@ exports.likePost = (req, res, next) => {
 			Post.findOne({ _id: req.params.id })
 				.then((post) => {
 					// Checks if the user has already liked the post
-					if (post.usersLiked.includes(req.body.userId)) {
+					if (post.usersLiked.includes(req.auth.userId)) {
 						Post.updateOne(
 							{ _id: req.params.id },
 							{

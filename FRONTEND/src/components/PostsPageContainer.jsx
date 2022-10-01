@@ -6,8 +6,10 @@ const PostsPageContainer = () => {
 	return (
 		<div className=" container flex flex-col mx-auto px-[10%] content-center w-full">
 			<PostsPageHeader />
-			<PostsPageAddPost />
-			<PostsPagePostsView />
+			<div className="overflow-y-scroll no-scrollbar">
+				<PostsPageAddPost />
+				<PostsPagePostsView />
+			</div>
 		</div>
 	);
 };

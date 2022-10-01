@@ -1,0 +1,26 @@
+import usePostsRefresh from "../../hooks/usePostsRefresh";
+import useAuth from "../../hooks/useAuth";
+import "../Button/button.css";
+import axios from "../../Api/axios";
+
+const DeletePost = ({ post }) => {
+	const { refresh, setRefresh } = usePostsRefresh();
+	const { auth } = useAuth();
+
+	const deletePost = async () => {
+		const id = post._id;
+		try {
+			await axios.delete(`/post/${id}`, { headers: { Authorization: `Bearer ${auth.token}` } });
+			setRefresh(!refresh);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	return (
+		<button onClick={deletePost} className="brutal-btn">
+			Supprimer le post
+		</button>
+	);
+};
+
+export default DeletePost;

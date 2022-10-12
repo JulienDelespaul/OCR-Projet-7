@@ -4,7 +4,7 @@ import PostsPagePostsView from "./PostsPageComponents/PostsPagePostsView";
 
 const PostsPageContainer = () => {
 	return (
-		<div className=" container flex flex-col mx-auto px-[10%] content-center w-full">
+		<div className=" container flex flex-col mx-auto  content-center w-full">
 			<PostsPageHeader />
 			<div className="overflow-y-scroll">
 				<PostsPageAddPost />

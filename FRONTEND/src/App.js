@@ -20,9 +20,12 @@ function App() {
 				<Route element={<RequireAuth allowedRoles={["user", "admin"]} />}>
 					<Route path="posts" element={<PostsPage />} />
 					<Route path="profile" element={<ProfilePage />} />
+					<Route path="posts" element={<PostsPage />} />
 				</Route>
 				{/* Redirect to login page / catch all */}
 				<Route path="unauthorized" element={<Unauthorized />} />
+				<Route path="design" element={<PostsPage />} />
+
 				<Route path="*" element={<LoginPage />} />
 			</Route>
 		</Routes>

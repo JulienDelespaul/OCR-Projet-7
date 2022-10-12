@@ -104,7 +104,7 @@ const Posts = () => {
 
 	return (
 		<article className="text-tertiary text-lg">
-			<h2 className="h-min mt-4 p-4 w-full flex flex-col justify-between object-top border-2 text-primary font-bold text-3xl border-primary border-b-8 border-r-8 rounded-2xl">
+			<h2 className="h-min mt-2 p-2 pl-4 w-full flex flex-col justify-between object-top border-2 text-primary font-bold text-3xl border-primary border-b-8 border-r-8 rounded-2xl">
 				Contributions
 			</h2>
 			<ul className="flex flex-col gap-y-4">{content}</ul>

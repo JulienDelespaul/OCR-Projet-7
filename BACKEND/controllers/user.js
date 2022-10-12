@@ -1,7 +1,11 @@
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const user = require("../models/user");
 const User = require("../models/user");
 
+// Sign up and login
+
+// Sign up
 exports.signup = (req, res, next) => {
 	bcryptjs
 		//hashing and salting the password
@@ -22,6 +26,7 @@ exports.signup = (req, res, next) => {
 		.catch((error) => res.status(500).json({ error }));
 };
 
+// Login
 exports.login = (req, res, next) => {
 	//finding the user in the database
 	User.findOne({ email: req.body.email })
@@ -63,4 +68,32 @@ exports.login = (req, res, next) => {
 				.catch((error) => res.status(500).json({ error }));
 		})
 		.catch((error) => res.status(500).json({ error }));
+};
+
+// User profile
+
+// Get user profile
+exports.getUserProfile = (req, res, next) => {
+	User.findOne({ _id: req.params.id }, { password: 0, refreshToken: 0 })
+		.then((user) => res.status(200).json(user))
+		.catch((error) => res.status(404).json({ error }));
+};
+
+// Update user profile
+exports.updateUserProfile = (req, res, next) => {
+	if (req.file) {
+		if (user.imageUrl !== null) {
+			const filename = user.imageUrl.split("/images/profil/")[1];
+			fs.unlink(`images/profil/${filename}`, () => {
+				console.log("Image supprimée");
+			});
+		}
+		User.updateOne({ _id: req.params.id }, { ...req.body, imageUrl: `${req.protocol}://${req.get("host")}/images/profil/${req.file.filename}` })
+			.then(() => res.status(200).json({ message: "Profil modifié !" }))
+			.catch((error) => res.status(400).json({ error }));
+	} else {
+		User.updateOne({ _id: req.params.id }, { ...req.body, imageUrl: user.imageUrl })
+			.then(() => res.status(200).json({ message: "Profil modifié !" }))
+			.catch((error) => res.status(400).json({ error }));
+	}
 };

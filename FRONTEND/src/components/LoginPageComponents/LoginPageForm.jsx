@@ -31,9 +31,9 @@ const LoginPageForm = (props) => {
 		try {
 			const response = await axios.post(LOGIN_URL, { email: data.email, password: data.password });
 			console.log(JSON.stringify(response?.data));
-			const { token, userId } = response?.data;
+			const { token, userId, email } = response?.data;
 			const role = response?.data?.role;
-			setAuth({ userId, token, role });
+			setAuth({ userId, token, role, email });
 			setSuccess(true);
 		} catch (error) {
 			console.log(error);
@@ -49,11 +49,11 @@ const LoginPageForm = (props) => {
 	const timedRedirect = () => {
 		setTimeout(() => {
 			navigate("/posts");
-		}, 3000);
+		}, 1000);
 	};
 
 	return (
-		<div className="mt-4 p-4 w-1/3 border-2 border-black border-b-8 border-r-8 rounded-2xl text-xl">
+		<div className="mt-4 p-4 lg:w-[35%] border-2 border-black border-b-8 border-r-8 rounded-2xl text-xl">
 			{success ? (
 				<div>
 					<h1 className="text-primary text-lg font-bold text-center">Vous êtes désormais connecté.</h1>

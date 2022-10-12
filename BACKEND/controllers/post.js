@@ -8,7 +8,14 @@ exports.getOnePost = (req, res, next) => {
 };
 
 exports.getAllPosts = (req, res, next) => {
+	const page = req.params.page;
+	const limit = 5;
+	const skip = (page - 1) * limit;
+
 	Post.find()
+		.limit(limit)
+		.skip(skip)
+		.sort({ createdAt: -1 })
 		.then((posts) => res.status(200).json(posts))
 		.catch((error) => res.status(400).json({ error: error }));
 };
@@ -24,7 +31,7 @@ exports.createPost = (req, res, next) => {
 	});
 	post
 		.save()
-		.then(() => res.status(201).json({ message: "Post saved!" }))
+		.then((data) => res.send(data._id))
 		.catch((error) => res.status(400).json({ error: error }));
 };
 
@@ -37,29 +44,26 @@ exports.modifyPost = (req, res, next) => {
 				});
 			} else {
 				if (req.file) {
-					const filename = post.imageUrl.split("/images/")[1];
-					const parsedPostData = JSON.parse(req.body.post);
-					fs.unlink(`images/${filename}`, () => {
-						console.log("Image supprimée");
-					});
+					if (post.imageUrl !== null) {
+						const filename = post.imageUrl.split("/images/")[1];
+						fs.unlink(`images/${filename}`, () => {
+							console.log("Image supprimée");
+						});
+					}
 					Post.updateOne(
 						{ _id: req.params.id },
 						{
-							name: parsedPostData.name,
-							title: parsedPostData.title,
-							content: parsedPostData.content,
+							content: req.body.content,
 							_userId: req.auth.userId,
 							imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
 						}
 					)
 						.then(() => res.status(200).json({ message: "Post mis à jour !" }))
-						.catch((error) => res.status(400).json({ error }));
+						.catch((error) => res.status(400).json({ 2: error }));
 				} else {
 					Post.updateOne(
 						{ _id: req.params.id },
 						{
-							name: req.body.name,
-							title: req.body.title,
 							content: req.body.content,
 							_userId: req.auth.userId,
 						}
@@ -80,12 +84,18 @@ exports.deletePost = (req, res, next) => {
 					error: "Vous n'avez pas le droit de supprimer ce post !",
 				});
 			} else {
-				const filename = post.imageUrl.split("/images/")[1];
-				fs.unlink(`images/${filename}`, () => {
+				if (post.imageUrl !== null) {
+					const filename = post.imageUrl.split("/images/")[1];
+					fs.unlink(`images/${filename}`, () => {
+						Post.deleteOne({ _id: req.params.id })
+							.then(() => res.status(200).json({ message: "Post supprimé !" }))
+							.catch((error) => res.status(400).json({ error }));
+					});
+				} else {
 					Post.deleteOne({ _id: req.params.id })
 						.then(() => res.status(200).json({ message: "Post supprimé !" }))
 						.catch((error) => res.status(400).json({ error }));
-				});
+				}
 			}
 		})
 		.catch((error) => res.status(500).json({ error }));

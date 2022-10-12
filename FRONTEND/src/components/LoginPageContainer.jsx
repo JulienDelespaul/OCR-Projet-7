@@ -13,7 +13,7 @@ const LoginPageContainer = () => {
 	};
 
 	return (
-		<div className="container flex justify-between  px-[10%] items-start w-full">
+		<div className="container flex flex-col lg:flex-row justify-between items-center px-[10%] lg:items-start w-full">
 			<LoginPageSplashText />
 			{!createAccountForm ? <LoginPageForm toggleAccountForm={toggleAccountForm} /> : <CreateAccountForm />}
 		</div>

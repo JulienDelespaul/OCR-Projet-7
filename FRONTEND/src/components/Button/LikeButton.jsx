@@ -6,7 +6,7 @@ import usePostsRefresh from "../../hooks/usePostsRefresh";
 const LikeButton = ({ post }) => {
 	const [isLiked, setIsLiked] = useState();
 	const { auth } = useAuth();
-	const { refresh, setRefresh } = usePostsRefresh();
+	const { setRefresh, setPostId } = usePostsRefresh();
 
 	// check if the post is liked by the user and set the state
 	const userLike = post.usersLiked.includes(auth.userId);
@@ -24,7 +24,8 @@ const LikeButton = ({ post }) => {
 		try {
 			const response = await axios.post(`/post/${id}/like`, { userId, like: formatedUserLike }, { headers: { Authorization: `Bearer ${auth.token}` } });
 			console.log(response.data);
-			setRefresh(!refresh);
+			setRefresh(true);
+			setPostId(id);
 		} catch (error) {
 			console.log(error);
 		}

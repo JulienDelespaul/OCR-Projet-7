@@ -11,6 +11,7 @@ const userSchema = mongoose.Schema({
 	lastName: { type: String, required: false },
 	position: { type: String, required: false },
 	department: { type: String, required: false },
+	bio: { type: String, required: false },
 	picture: { type: String, required: false },
 	background: { type: String, required: false },
 });

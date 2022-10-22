@@ -1,8 +1,11 @@
 const Post = require("../models/post");
 const fs = require("fs");
+const { db } = require("../models/post");
+const { default: mongoose } = require("mongoose");
 
 exports.getOnePost = (req, res, next) => {
 	Post.findOne({ _id: req.params.id })
+
 		.then((post) => res.status(200).json(post))
 		.catch((error) => res.status(404).json({ error: error }));
 };
@@ -11,11 +14,22 @@ exports.getAllPosts = (req, res, next) => {
 	const page = req.params.page;
 	const limit = 5;
 	const skip = (page - 1) * limit;
+	let userId = "1234";
 
-	Post.find()
-		.limit(limit)
-		.skip(skip)
-		.sort({ createdAt: -1 })
+	Post.aggregate([
+		{ $sort: { createdAt: -1 } },
+		{ $skip: skip },
+		{ $limit: limit },
+		{
+			$addFields: {
+				userIdObject: {
+					$toObjectId: "$userId",
+				},
+			},
+		},
+		{ $lookup: { from: "users", localField: "userIdObject", foreignField: "_id", as: "user" } },
+		{ $unwind: "$user" },
+	])
 		.then((posts) => res.status(200).json(posts))
 		.catch((error) => res.status(400).json({ error: error }));
 };
